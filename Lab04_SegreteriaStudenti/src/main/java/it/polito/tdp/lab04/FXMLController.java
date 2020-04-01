@@ -25,7 +25,7 @@ public class FXMLController {
 	private URL location;
 
 	@FXML
-	private ComboBox<String> comboBox;
+	private ComboBox<Corso> comboBox;
 
 	@FXML
 	private Button btnCercaIscritti;
@@ -66,20 +66,19 @@ public class FXMLController {
 
 		List<Corso> corsi = model.trovaCorsiStudente(studente);
 		for (Corso corso : corsi) {
-			txtArea.appendText(corso.toString() + "\n");
+			txtArea.appendText(corso.toStringAll() + "\n");
 		}
 	}
 
 	@FXML
 	void doCercaIscritti(ActionEvent event) {
 		txtArea.clear();
-		String selezione = comboBox.getValue();
+		Corso corso = comboBox.getValue();
 
-		if (selezione == null) {
+		if (corso == null) {
 			txtArea.setText("SELEZIONARE UN CORSO");
 			return;
 		}
-		Corso corso = model.getCorsoNome(selezione);
 		List<Studente> studenti = model.getStudentiIscrittiAlCorso(corso);
 		for (Studente studente : studenti) {
 			txtArea.appendText(studente.toString() + "\n");
@@ -112,9 +111,8 @@ public class FXMLController {
 			txtCognome.setText(studente.getCognome());
 			txtNome.setText(studente.getNome());
 		} else {
-			Corso corso = model.getCorsoNome(comboBox.getValue());
-			boolean risultato = model.findStudenteInCorso(studente, corso);
-			if(risultato) {
+			boolean risultato = model.findStudenteInCorso(studente, comboBox.getValue());
+			if (risultato) {
 				txtArea.setText("LO STUDENTE E' ISCRITTO AL CORSO");
 			} else {
 				txtArea.setText("LO STUDENTE NON E' ISCRITTO AL CORSO");
@@ -146,15 +144,7 @@ public class FXMLController {
 
 	private void startComboCox() {
 		List<Corso> lista = model.getTuttiICorsi();
-
-		String[] listaCorsiString = new String[lista.size() + 1];
-
-		for (int i = 0; i < lista.size(); i++) {
-			listaCorsiString[i] = lista.get(i).getNome();
-		}
-
-		comboBox.getItems().setAll(listaCorsiString);
-
+		comboBox.getItems().setAll(lista);
 	}
 
 	public void setModel(Model model) {

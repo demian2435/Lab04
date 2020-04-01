@@ -48,6 +48,10 @@ public class Corso {
 
 	@Override
 	public String toString() {
+		return nome;
+	}
+	
+	public String toStringAll() {
 		return "Corso [codins=" + codins + ", numeroCrediti=" + numeroCrediti + ", nome=" + nome + ", periodoDidattico="
 				+ periodoDidattico + "]";
 	}
